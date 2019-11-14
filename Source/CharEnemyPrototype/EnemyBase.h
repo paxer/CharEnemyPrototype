@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "PlayerBase.h"
+#include "AIControllerBase.h"
 #include "EnemyBase.generated.h"
 
 UCLASS()
@@ -14,16 +16,17 @@ class CHARENEMYPROTOTYPE_API AEnemyBase : public ACharacter
 public:
 	// Sets default values for this character's properties
 	AEnemyBase();
+	APlayerBase* Player;
+	AAIControllerBase* AIController;
+	// Called every frame
+	void Tick(float DeltaTime) override;
+
+	// Called to bind functionality to input
+	void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	void ChasePlayer();
 
 protected:
 	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
+	void BeginPlay() override;
 };
