@@ -8,15 +8,20 @@ APlayerBase::APlayerBase()
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	Health = 1.0;
+	Health = 1.0f;
+	Mana = 1.0f;
+	SpellPower = 0.1f;
+	MaxHealth = 1.0f;
 }
 
 // Called when the game starts or when spawned
 void APlayerBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	PlayerController = Cast<APlayerControllerBase>(Controller);	
+
+	PlayerController = Cast<APlayerControllerBase>(Controller);
+	UpdateHealthBar();
+	UpdateManaBar();
 }
 
 
@@ -33,6 +38,7 @@ void APlayerBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 	PlayerInputComponent->BindAxis("Forward", this, &APlayerBase::MoveForward);
 	PlayerInputComponent->BindAxis("Strafe", this, &APlayerBase::MoveRight);
+	PlayerInputComponent->BindAction("Spell", IE_Pressed, this, &APlayerBase::MakeSpell);
 }
 
 float APlayerBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
@@ -42,7 +48,7 @@ float APlayerBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEven
 		Health -= DamageAmount;
 		UpdateHealthBar();
 
-		if (Health <= 0.0)
+		if (Health <= 0.0f)
 		{
 			IsDead = true;
 			PlayerIsDead();
@@ -70,6 +76,18 @@ void APlayerBase::MoveRight(float Value)
 	}
 }
 
+void APlayerBase::MakeSpell()
+{
+	if (Mana >= 0.0)
+	{
+		Mana -= SpellPower;
+		Health += SpellPower;
+		Health = FMath::Clamp(Health, 0.0f, MaxHealth);
+		UpdateHealthBar();
+		UpdateManaBar();
+	}
+}
+
 void APlayerBase::UpdateHealthBar()
 {
 	if (PlayerController)
@@ -78,6 +96,18 @@ void APlayerBase::UpdateHealthBar()
 		if (HealthBar)
 		{
 			HealthBar->Update(Health);
+		}
+	}
+}
+
+void APlayerBase::UpdateManaBar()
+{
+	if (PlayerController)
+	{
+		auto ManaBar = PlayerController->ManaBar;
+		if (ManaBar)
+		{
+			ManaBar->Update(Mana);
 		}
 	}
 }

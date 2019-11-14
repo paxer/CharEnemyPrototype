@@ -17,6 +17,7 @@ public:
 	APlayerBase();
 	void MoveForward(float Value);
 	void MoveRight(float Value);
+	void MakeSpell();
 	bool IsDead;
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Player Events")
@@ -24,8 +25,14 @@ public:
 	
 	APlayerControllerBase* PlayerController;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerAttributes)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerAttributes, Meta = (ClampMin = "0.0", ClampMax = "1.0"))
 	float Health;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerAttributes, Meta = (ClampMin = "0.0", ClampMax = "1.0"))
+	float Mana;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerAttributes)
+	float SpellPower;
 
 	// Called every frame
 	void Tick(float DeltaTime) override;
@@ -40,5 +47,7 @@ protected:
 	void BeginPlay() override;
 
 private:
-	void UpdateHealthBar();	
+	float MaxHealth;
+	void UpdateHealthBar();
+	void UpdateManaBar();
 };
