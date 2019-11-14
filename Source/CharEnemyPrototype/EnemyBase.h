@@ -18,6 +18,10 @@ public:
 	AEnemyBase();
 	APlayerBase* Player;
 	AAIControllerBase* AIController;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EnemyAttributes)
+	float Damage;
+	
 	// Called every frame
 	void Tick(float DeltaTime) override;
 
@@ -26,6 +30,27 @@ public:
 
 	void ChasePlayer();
 
+	// Overlap
+	UFUNCTION()
+	void BeginOverlap(UPrimitiveComponent* OverlappedComponent,
+	                  AActor* OtherActor,
+	                  UPrimitiveComponent* OtherComp,
+	                  int32 OtherBodyIndex,
+	                  bool bFromSweep,
+	                  const FHitResult& SweepResult);
+	// End Overlap
+	UFUNCTION()
+	void EndOverlap(UPrimitiveComponent* OverlappedComp,
+	                AActor* OtherActor,
+	                UPrimitiveComponent* OtherComp,
+	                int32 OtherBodyIndex);
+
+	FTimerHandle ApplyDamageTimer;
+
+	UFUNCTION()
+	void ApplyDamage(AActor* Actor);
+
+	
 protected:
 	// Called when the game starts or when spawned
 	void BeginPlay() override;
