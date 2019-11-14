@@ -51,7 +51,7 @@ void AEnemyBase::ChasePlayer()
 		AIController = Cast<AAIControllerBase>(GetController());
 		if (AIController)
 		{
-			AIController->MoveToActor(Player);
+			AIController->MoveToActor(Player, -1, false);
 		}
 	}
 }
@@ -66,6 +66,7 @@ void AEnemyBase::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* 
 void AEnemyBase::EndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	GetWorldTimerManager().ClearTimer(ApplyDamageTimer);
+	ChasePlayer();
 }
 
 void AEnemyBase::ApplyDamage(AActor* Actor)
