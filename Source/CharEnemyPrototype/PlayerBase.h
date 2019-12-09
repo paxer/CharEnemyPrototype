@@ -7,12 +7,18 @@
 #include "PlayerControllerBase.h"
 #include "PlayerBase.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FUpdateHealthSignature, float, UpdatedHealth);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FUpdateManaSignature, float, UpdatedMana);
+
 UCLASS()
 class CHARENEMYPROTOTYPE_API APlayerBase : public ACharacter
 {
 	GENERATED_BODY()
 
-public:
+public:	
+	FUpdateHealthSignature OnHealthUpdate;
+	FUpdateManaSignature OnManaUpdate;
+		
 	// Sets default values for this character's properties
 	APlayerBase();
 	void MoveForward(float Value);

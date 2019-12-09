@@ -90,24 +90,16 @@ void APlayerBase::MakeSpell()
 
 void APlayerBase::UpdateHealthBar()
 {
-	if (PlayerController)
+	if (OnHealthUpdate.IsBound())
 	{
-		auto HealthBar = PlayerController->HealthBar;
-		if (HealthBar)
-		{
-			HealthBar->Update(Health);
-		}
+		OnHealthUpdate.Broadcast(Health);
 	}
 }
 
 void APlayerBase::UpdateManaBar()
 {
-	if (PlayerController)
+	if (OnManaUpdate.IsBound())
 	{
-		auto ManaBar = PlayerController->ManaBar;
-		if (ManaBar)
-		{
-			ManaBar->Update(Mana);
-		}
+		OnManaUpdate.Broadcast(Mana);
 	}
 }

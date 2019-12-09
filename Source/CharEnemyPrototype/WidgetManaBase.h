@@ -14,4 +14,10 @@ UCLASS()
 class CHARENEMYPROTOTYPE_API UWidgetManaBase : public UWidgetProgressBarBase
 {
 	GENERATED_BODY()
+	
+public:
+	UWidgetManaBase();
+
+	UFUNCTION()
+	void ManaUpdated(float Mana);
 };

@@ -12,4 +12,13 @@ UCLASS()
 class CHARENEMYPROTOTYPE_API UWidgetHealthBase : public UWidgetProgressBarBase
 {
 	GENERATED_BODY()
+
+	
+
+public:
+
+	UWidgetHealthBase();
+	
+	UFUNCTION()
+	void HealthUpdated(float Health);
 };
